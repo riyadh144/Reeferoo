@@ -40,29 +40,29 @@ thu = data['Thursday']
 fri = data['Friday']
 sat = data['Saturday']
 sun = data['Sunday']
-sod= data[today]#schedule of the day
-#mmm="ds"
+sod= data[today]  # schedule of the day
+# mmm="ds"
 form = cgi.FieldStorage()
-#cgit.enable(display0, logdir=OUTDIR)
-if "reefer1" in form:
+# cgit.enable(display0, logdir=OUTDIR)
+if "reefer1" in form and r5s==False:
 	r1s = not bool(r1s)
 	r2s = 0
 	r3s = 0
 	r4s = 0
-elif "reefer2" in form:
+elif "reefer2" in form and r5s==False:
 	r2s = not bool(r2s)
 	r1s = 0
 	r3s = 0
 	r4s = 0
 
-elif "reefer3" in form:
+elif "reefer3" in form and r5s==False:
 	r3s = not bool(r3s)
 	r1s = 0
 	r2s = 0
 	r4s = 0
 
 
-elif "reefer4" in form:
+elif "reefer4" in form and r5s==False:
 	r4s = not bool(r4s)
 	r1s = 0
 	r2s = 0
@@ -81,7 +81,7 @@ elif "schedule" in form:
 	data['Friday']      =ast.literal_eval((form.getvalue("Friday")))
 	data['Saturday']    =ast.literal_eval((form.getvalue("Saturday")))
 	data['Sunday']      =ast.literal_eval((form.getvalue("Sunday")))
-if "1" in sod:
+if "1" in sod and r5s==True:
 	on=0
 	for interval in sod["1"]:
 		timeInterval=[0,0]#Time inteval 0 is the start 1 is the end
@@ -103,7 +103,7 @@ if "1" in sod:
 	else:
 		r1s=0
 
-if "2" in sod:
+if "2" in sod and r5s==True:
 	on=0
 	for interval in sod["2"]:
 		timeInterval=[0,0]#Time inteval 0 is the start 1 is the end
@@ -124,7 +124,7 @@ if "2" in sod:
 	else:
 		r2s=0
 
-if "3" in sod:
+if "3" in sod and r5s==True:
 	for interval in sod["3"]:
 		timeInterval=[0,0]#Time inteval 0 is the start 1 is the end
 		i=0
@@ -138,7 +138,7 @@ if "3" in sod:
 			r2s = 0
 			r3s = 1
 			r4s = 0
-if "4" in sod:
+if "4" in sod and r5s==True:
 	for interval in sod["4"]:
 		timeInterval=[0,0]#Time inteval 0 is the start 1 is the end
 		i=0
