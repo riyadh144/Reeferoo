@@ -1,5 +1,11 @@
 import json
 import time
+spi = spidev.SpiDev()
+spi.open(0,0)
+spi.max_speed_hz=50000
+spi.mode=3
+
+
 
 r1r=False # Real Status of reefers
 r2r=False
@@ -15,13 +21,16 @@ def turnOn(x):
 	print(ra)
 	for i in ra:
 		print(str(i)+"is Off")
+	spi.writebytes([240+x])
 	print(str(x)+"is On")
 def turnOff(x):
 	print(str(x)+"is Off")
+	spi.writebytes([192+x])
 def getVoltages():
 	VA=0
 	VB=0
 	VC=0
+	
 	return [VA,VB,VC]
 def getCurrents():
 	IA=0
