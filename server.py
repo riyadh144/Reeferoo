@@ -27,16 +27,41 @@ def turnOff(x):
 	print(str(x)+"is Off")
 	spi.writebytes([192+x])
 def getVoltages():
-	VA=0
-	VB=0
-	VC=0
-	
-	return [VA,VB,VC]
+
+	spi.writebytes([0b01000000])
+	time.sleep(.05)
+	phaseAVoltage = spi.readbytes(4)[1:4]
+	phaseAVoltage = int.from_bytes(phaseAVoltage, byteorder='big', signed=True)
+
+	spi.writebytes([0b01010000])
+	time.sleep(.05)
+	phaseBVoltage = spi.readbytes(4)[1:4]
+	phaseBVoltage = int.from_bytes(phaseBVoltage, byteorder='big', signed=True)
+	spi.writebytes([0b01100000])
+	time.sleep(.05)
+	phaseCVoltage = spi.readbytes(4)[1:4]
+	phaseCVoltage = int.from_bytes(phaseCVoltage, byteorder='big', signed=True)
+
+	return [phaseAVoltage,phaseBVoltage,phaseCVoltage]
 def getCurrents():
-	IA=0
-	IB=0
-	IC=0
-	return [IA,IB,IC]
+	spi.writebytes([0b01000001])
+	time.sleep(.05)
+	phaseACurrent = spi.readbytes(4)[1:4]
+	phaseACurrent = int.from_bytes(phaseACurrent, byteorder='big', signed=True)
+
+	phaseACurrent = 12371590 + (1.812245 - 12371590) / (1 + (phaseACurrent / 146183.6) ** 3.000376)
+
+	spi.writebytes([0b01010001])
+	time.sleep(.05)
+	phaseBCurrent = spi.readbytes(4)[1:4]
+	phaseBCurrent = int.from_bytes(phaseBCurrent, byteorder='big', signed=True)
+
+	spi.writebytes([0b01100001])
+	time.sleep(.05)
+	phaseCCurrent = spi.readbytes(4)[1:4]
+	phaseCCurrent = int.from_bytes(phaseCCurrent, byteorder='big', signed=True)
+
+	return [phaseACurrent,phaseBCurrent,phaseCCurrent]
 
 def run():
 	lock = "false"
