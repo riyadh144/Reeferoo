@@ -131,8 +131,8 @@ x ='''Content-type: text/html /n/n
 <br>
 <br>
 In each field you will enter the weekly schedule as follows
-Each reefer wiil be refered to by its number 1,2,3,4 <REF>, t
-te time will be in military format HHMM will be referred to as <end>,<start>
+Each reefer will be refered to by its number 1,2,3,4 <REF>,
+the time will be in military format HHMM will be referred to as <end>,<start>
 <REF>:{<start1>,<end1>},{<start2>,<end2>},..
 
 <br>
