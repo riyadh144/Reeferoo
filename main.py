@@ -96,12 +96,12 @@ r4c = color[int(r4s)]
 r5c = color[int(r5s)]
 
 
-phaseAVoltage=data['VoltageA'];
-phaseBVoltage=data['VoltageB'];
-phaseCVoltage=data['VoltageC'];
-phaseACurrent=data['CurrentA'];
-phaseBCurrent=data['CurrentB'];
-phaseCCurrent=data['CurrentC'];
+phaseAVoltage=round(data['VoltageA']/8.57,2)
+phaseBVoltage=round(data['VoltageB']/8.57,2)
+phaseCVoltage=round(data['VoltageC']/8.57,2)
+phaseACurrent=round(data['CurrentA']*.0069,2)
+phaseBCurrent=round(data['CurrentB']*.0069,2)
+phaseCCurrent=round(data['CurrentC']*.0069,2)
 data['lock'] = False
 
 with open("ReeferStatus.ss", "w") as jsonFile:
@@ -112,10 +112,10 @@ x ='''Content-type: text/html /n/n
 <html>
 	   <meta http-equiv="refresh" content="15">
 	   <form action='main.py' method='POST'>
-	   Reefers On are Labeled Green, this will take force over the schedule
+	   Reefers On are Labeled Green, this will take force over the schedule to over ride the schedule you need to press the Automatic button
 <br>
 
-	<input type='submit' value='reefer1' name='reefer1' style='background-color:''' + r1c + ''''/>        
+	<input type='submit' value='daikiniic' name='reefer1' style='background-color:''' + r1c + ''''/>        
 	<input type='submit' value='reefer2' name='reefer2' style='background-color:''' + r2c + ''''/>       
 	<input type='submit' value='reefer3' name='reefer3' style='background-color:''' + r3c + ''''/>        
 	<input type='submit' value='reefer4' name='reefer4' style='background-color:''' + r4c + ''''/>   
@@ -130,10 +130,9 @@ x ='''Content-type: text/html /n/n
 <br>
 <br>
 <br>
-In each field you will enter the weekly schedule as follows
-Each reefer will be refered to by its number 1,2,3,4 <REF>,
-the time will be in military format HHMM will be referred to as <end>,<start>
-<REF>:{<start1>,<end1>},{<start2>,<end2>},..
+In each field you will enter the weekly schedule as follows.\n
+Each reefer will be refered to by its number 1,2,3,4 <REF>, the time will be in military format HH:MM will be referred to as <end>,<start>
+<REF>:[<start1>,<end1>],[<start2>,<end2>],..
 
 <br>
 <br>
