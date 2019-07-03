@@ -9,7 +9,6 @@ import datetime
 weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 today=weekDays[datetime.datetime.today().weekday()]
 current_time =  datetime.datetime.now().hour*60 +datetime.datetime.now().minute
-#print(current_time)
 count = -1
 r1s = ""
 r2s = ""
@@ -26,8 +25,10 @@ while (lock):
 	time.sleep(.1)
 
 data['lock'] = False;
+
 with open("ReeferStatus.ss", "w") as jsonFile:
 	json.dump(data, jsonFile)
+
 r1s = data['Reefer1']
 r2s = data['Reefer2']
 r3s = data['Reefer3']
@@ -44,36 +45,35 @@ sod= data[today]  # schedule of the day
 # mmm="ds"
 form = cgi.FieldStorage()
 # cgit.enable(display0, logdir=OUTDIR)
-if "reefer1" in form and r5s==False:
-	r1s = not bool(r1s)
+if "reefer1" in form and r5s==0:
+	r1s = int(not r1s)
 	r2s = 0
 	r3s = 0
 	r4s = 0
-elif "reefer2" in form and r5s==False:
-	r2s = not bool(r2s)
+elif "reefer2" in form and r5s==0:
+	r2s = int(not r2s)
 	r1s = 0
 	r3s = 0
 	r4s = 0
 
-elif "reefer3" in form and r5s==False:
-	r3s = not bool(r3s)
+elif "reefer3" in form and r5s==0:
+	r3s = int(not r3s)
 	r1s = 0
 	r2s = 0
 	r4s = 0
 
 
-elif "reefer4" in form and r5s==False:
-	r4s = not bool(r4s)
+elif "reefer4" in form and r5s==0:
+	r4s = int(not r4s)
 	r1s = 0
 	r2s = 0
 	r3s = 0
 
 elif "Automatic" in form:
-	r5s = not bool(r5s)
+	r5s = int(not r5s)
 
 
 elif "schedule" in form:
-#elif True:
 	data['Monday']      =ast.literal_eval((form.getvalue("Monday")))
 	data['Tuesday']     =ast.literal_eval((form.getvalue("Tuesday")))
 	data['Wednesday']   =ast.literal_eval((form.getvalue("Wednesday")))
@@ -81,77 +81,7 @@ elif "schedule" in form:
 	data['Friday']      =ast.literal_eval((form.getvalue("Friday")))
 	data['Saturday']    =ast.literal_eval((form.getvalue("Saturday")))
 	data['Sunday']      =ast.literal_eval((form.getvalue("Sunday")))
-if "1" in sod and r5s==True:
-	on=0
-	for interval in sod["1"]:
-		timeInterval=[0,0]#Time inteval 0 is the start 1 is the end
-		i=0
 
-		for time in interval:
-			t= datetime.datetime.strptime(time, "%H:%M")
-			timeInterval[i]=t.hour*60+t.minute
-			i=i+1
-			#print(timeInterval)
-		if(timeInterval[0]<current_time and timeInterval[1]>current_time):
-			r1s = 1
-			r2s = 0
-			r3s = 0
-			r4s = 0
-			on=1
-	if(on):
-		r1s=1
-	else:
-		r1s=0
-
-if "2" in sod and r5s==True:
-	on=0
-	for interval in sod["2"]:
-		timeInterval=[0,0]#Time inteval 0 is the start 1 is the end
-		i=0
-		for time in interval:
-			t= datetime.datetime.strptime(time, "%H:%M")
-			timeInterval[i]=t.hour*60+t.minute
-			i=i+1
-			#print(timeInterval)
-		if(timeInterval[0]<current_time and timeInterval[1]>current_time):
-			r1s = 0
-			r2s = 1
-			r3s = 0
-			r4s = 0
-			on = 1
-	if(on):
-		r2s=1
-	else:
-		r2s=0
-
-if "3" in sod and r5s==True:
-	for interval in sod["3"]:
-		timeInterval=[0,0]#Time inteval 0 is the start 1 is the end
-		i=0
-		for time in interval:
-			t= datetime.datetime.strptime(time, "%H:%M")
-			timeInterval[i]=t.hour*60+t.minute
-			i=i+1
-			#print(timeInterval)
-		if(timeInterval[0]<current_time and timeInterval[1]>current_time):
-			r1s = 0
-			r2s = 0
-			r3s = 1
-			r4s = 0
-if "4" in sod and r5s==True:
-	for interval in sod["4"]:
-		timeInterval=[0,0]#Time inteval 0 is the start 1 is the end
-		i=0
-		for time in interval:
-			t= datetime.datetime.strptime(time, "%H:%M")
-			timeInterval[i]=t.hour*60+t.minute
-			i=i+1
-			#print(timeInterval)
-		if(timeInterval[0]<current_time and timeInterval[1]>current_time):
-			r1s = 0
-			r2s = 0
-			r3s = 0
-			r4s = 1
 
 data['Reefer1'] = r1s
 data['Reefer2'] = r2s
@@ -180,7 +110,7 @@ with open("ReeferStatus.ss", "w") as jsonFile:
 x ='''Content-type: text/html /n/n
 
 <html>
-	   <meta http-equiv="refresh" content="5">
+	   <meta http-equiv="refresh" content="15">
 	   <form action='main.py' method='POST'>
 	   Reefers On are Labeled Green, this will take force over the schedule
 <br>
@@ -189,7 +119,7 @@ x ='''Content-type: text/html /n/n
 	<input type='submit' value='reefer2' name='reefer2' style='background-color:''' + r2c + ''''/>       
 	<input type='submit' value='reefer3' name='reefer3' style='background-color:''' + r3c + ''''/>        
 	<input type='submit' value='reefer4' name='reefer4' style='background-color:''' + r4c + ''''/>   
-	<input type='submit' value='Automatic' name='automatic' style='background-color:''' + r5c + ''''/>        
+	<input type='submit' value='Automatic' name='Automatic' style='background-color:''' + r5c + ''''/>        
 
 <br>
 	VoltageA =''' + str(phaseAVoltage) + '''  VoltageB =''' + str(phaseBVoltage) + '''   VoltageC =''' + str(
